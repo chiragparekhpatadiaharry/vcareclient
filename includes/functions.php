@@ -28,11 +28,19 @@
             </tr>
 <?php
         }
-        $rs2=mysql_query("select PinDiscount from tbl_pin_discount where Status=1");
+        $rs2=mysql_query("select MinimumAmount,PinDiscount from tbl_pin_discount where Status=1");
         $discount="";
+        $amt="";
         while($r2=mysql_fetch_array($rs2))
         {
-            echo $r2[0];
+            $discount.=$r2["PinDiscount"].",";
+            $amt.=$r2["MinimumAmount"].",";   
         }
+?>
+            
+                <input type="hidden" id="hidDisc" name="hidDisc" value="<?=$discount;?>" />
+                <input type="hidden" id="hidAmt" name="hidAmt" value="<?=$amt;?>" />
+            
+<?php
     }
 ?>

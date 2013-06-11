@@ -55,16 +55,40 @@ include_once "includes/functions.php";
                 var qtys = document.getElementsByName(qty_name);
                 var amts = document.getElementsByName(amt_name);
                 var c_qty=0;
+                var discount=0;
+                var netAmt=0;
                 for (var i=0; i<qtys.length; i++)
 			    {
-				   //alert(qtys[i].value);
                    if(qtys[i].value!=0)
                    {
                         c_qty+=1;
                         gtotal+=amts[i].value*qtys[i].value;
                    }
 			    }
-                $("#total").text(gtotal);
+                $("#total").text(gtotal.toFixed(2));
+                var arr_disc=$("#hidDisc").val().split(",");
+                var arr_amt=$("#hidAmt").val().split(",");
+                var largest = Math.max.apply(Math, arr_amt);
+                if(gtotal>=largest)
+                {
+                    discount = Math.max.apply(Math, arr_disc);
+                }
+                else
+                {
+                    for(var i=0; i<arr_amt.length; i++)
+                    {
+                        if(arr_amt[i]!="")
+                        {
+                            if(arr_amt[i]>gtotal)
+                                break;
+                            discount=arr_disc[i];
+                        }
+                    }
+                }
+                var discountRs=gtotal*(discount/100);
+                $("#discount").text(discountRs.toFixed(2));
+                netAmt=gtotal-discountRs;
+                $("#netAmt").text(netAmt.toFixed(2));
             }
         </script>
         
