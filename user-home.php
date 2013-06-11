@@ -65,7 +65,7 @@ include_once "includes/functions.php";
                         gtotal+=amts[i].value*qtys[i].value;
                    }
 			    }
-                $("#total").text(gtotal.toFixed(2));
+                $("#total").val(gtotal.toFixed(2));
                 var arr_disc=$("#hidDisc").val().split(",");
                 var arr_amt=$("#hidAmt").val().split(",");
                 var largest = Math.max.apply(Math, arr_amt);
@@ -86,12 +86,50 @@ include_once "includes/functions.php";
                     }
                 }
                 var discountRs=gtotal*(discount/100);
-                $("#discount").text(discountRs.toFixed(2));
+                $("#discount").val(discountRs.toFixed(2));
                 netAmt=gtotal-discountRs;
-                $("#netAmt").text(netAmt.toFixed(2));
+                $("#netAmt").val(netAmt.toFixed(2));
+            }
+            
+            function paymentTypeForm(type)
+            {
+            	if(type=="cheque" || type=="dd")
+            	{
+            		document.getElementById('divCheque').style.display="";
+            		document.getElementById('divCash').style.display="none";
+            		document.getElementById('divEpin').style.display="none";
+            		document.getElementById('divPPC').style.display="none";
+            	}
+            	else if(type=="cash")
+            	{
+            		document.getElementById('divCheque').style.display="none";
+            		document.getElementById('divCash').style.display="";
+            		document.getElementById('divEpin').style.display="none";
+            		document.getElementById('divPPC').style.display="none";
+            	}
+            	else if(type=="epin")
+            	{
+            		document.getElementById('divCheque').style.display="none";
+            		document.getElementById('divCash').style.display="none";
+            		document.getElementById('divEpin').style.display="";
+            		document.getElementById('divPPC').style.display="none";
+            	}
+            	else if(type=="ppc")
+            	{
+            		document.getElementById('divCheque').style.display="none";
+            		document.getElementById('divCash').style.display="none";
+            		document.getElementById('divEpin').style.display="none";
+            		document.getElementById('divPPC').style.display="";
+            	}
+            	else if(type=="nopayment")
+            	{
+            		document.getElementById('divCheque').style.display="none";
+            		document.getElementById('divCash').style.display="none";
+            		document.getElementById('divEpin').style.display="none";
+            		document.getElementById('divPPC').style.display="none";
+            	}
             }
         </script>
-        
     </head>
 
 <body>
@@ -136,7 +174,7 @@ include_once "includes/functions.php";
                     
                       <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                       <table class="table table-hover">
-                        <caption><span style="font-size: 14px;" class="label label-warning">Order E-Pins</span></caption>
+                        <caption><h3>Order E-Pins</h3></caption>
                         <tr>
                             <td colspan="2"><span class="label label-info">E-Pin Detail</span></td>
                         </tr>
@@ -147,16 +185,153 @@ include_once "includes/functions.php";
                         </tr>
                         <tr>
                             <td>Amount</td>
-                            <td><div id="total"></div></td>
+                            <td><input type="text" readonly="" id="total" name="total" /></td>
                         </tr>
                         <tr>
                             <td>Discount</td>
-                            <td><div id="discount"></div></td>
+                            <td><input type="text" readonly="" id="discount" name="discount" /></td>
                         </tr>
                         <tr>
                             <td>Net Amount</td>
-                            <td><div id="netAmt"></div></td>
+                            <td><input type="text" readonly="" id="netAmt" name="netAmt" /></td>
                         </tr>
+                        <tr>
+                            <td>Payment Type</td>
+                            <td>
+                                <select name="lstPaymentType" id="lstPaymentType" onchange="javascript:paymentTypeForm(this.value);">
+                                    <option value="-1">- - Select - -</option>
+                                    <option value="cheque">Cheque</option>
+                                    <option value="dd">D.D.</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="ppc">P.P.C.</option>
+                                    <option value="nopayment">No Payment</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr id="divCheque">
+                            <td colspan="3">
+                            <table style="margin-left: 380px;" cellpadding="0" cellspacing="3">
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Bank Name<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="bank_name" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>A/C Name<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="bank_ac_name" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>A/C Type<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="bank_ac_type" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Check No.<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="check_no" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>A/C No.<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="bank_ac_no" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Amount<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="amount1" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Signature<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="signature" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Date<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="date" value="11-06-2013" class="w200" /></td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                        <tr id="divCash">
+                            <td colspan="3">
+                            <table style="margin-left: 380px;" cellpadding="0" cellspacing="3">
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Amount<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="amount2" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Signature<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="signature" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Date<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="date" value="11-06-2013" class="w200" /></td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                        <tr id="divEpin">
+                            <td colspan="3">
+                            <table style="margin-left: 380px;" cellpadding="0" cellspacing="3">
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>E-Pin Serial No.<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="epin_sr_no" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>E-Pin Password<span class="sep">:</span></strong></td>
+                                    <td class="" >
+                                        <input type="text" name="epin_password" value="" class="w200" />
+                                        <input type="button" name="epinGo" value="Go" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>E-Pin Amount & Position<span class="sep">:</span></strong></td>
+                                    <td class="" ></td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                        <tr  id="divPPC">
+                            <td colspan="3">
+                            <table style="margin-left: 380px;" cellpadding="0" cellspacing="3">
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Sahyogi ID<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="text" name="s_id_ppc" value="" class="w200" /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Password<span class="sep">:</span></strong></td>
+                                    <td class="" >
+                                        <input type="text" name="s_id_ppc_password" value="" class="w200" />
+                                        <input type="button" name="ppcGo" value="Go" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Sahyogi Total Jama PPC<span class="sep">:</span></strong></td>
+                                    <td class="" ></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td class="field"  ><strong>Deduct From P.P.C<span class="sep">:</span></strong></td>
+                                    <td class="" ><input type="checkbox" name="deductPPC" value="deductPPC" /></td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                        
+                        
                       </table>
                         
                       <div style="margin-left:48%;">
@@ -281,6 +456,10 @@ include_once "includes/functions.php";
                 }   
             }
         });
+        $("#divCheque").css("display","none");
+        $("#divCash").css("display","none");
+        $("#divPPC").css("display","none");
+        $("#divEpin").css("display","none");  
     });
 </script>
 
